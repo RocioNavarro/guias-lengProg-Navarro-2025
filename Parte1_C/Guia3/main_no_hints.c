@@ -115,8 +115,9 @@ static void good6(void) {
 static void bad7(void) {
     int *p = (int*)malloc(4);
     if (!p) { perror("malloc"); return; }
-    free(p);  // devuelve memoria al heap
+    free(p);  // devuelve memoria al heap, se agrega la direccion de este espacio de memoria a una lista de espacios libres
     free(p); // ERROR: free(): double free detected in tcache 2, Aborted (core dumped)
+    // cuando repito el free(p), por como los procesa el allocator, tendria dos veces ese espacio en la lista de lugares libres, por eso ahora el compilador nos tira el error de double free evitando eso, antes no pasaba 
 }
 
 static void good7(void) {
@@ -173,6 +174,21 @@ static void bad10(void) {
     int *p = returns_local_bad(); // p seria un puntero a un espacio ya liberado 
     // Using p is UB (Undefined Behavior), ERROR: Segmentation fault (core dumped)
     printf("dangling value: %d\n", *p);
+}
+
+static int* returns_local_good(void) {
+    int *p = malloc(sizeof *p); // memoria dinámica en el heap
+    if (!p) { perror("malloc"); return NULL; }
+    *p = 7;
+    return p; // devuelve puntero a memoria dinámica, sigue siendo válida después de salir de la función
+}
+
+static void good10(void) {
+    int *p = returns_local_good();
+    if (p) {
+        printf("valid value: %d\n", *p);
+        free(p);
+    }
 }
 
 
@@ -346,7 +362,7 @@ static void good20_v2(void) {
 
 
 int main(int argc, char **argv) {
-    //bad1();
+    // bad1();
     // bad2();
     // bad3();
     // bad4();
@@ -366,6 +382,6 @@ int main(int argc, char **argv) {
     // bad18();
     // bad20();
 
-    good15_v2();
+    // good10();
     return 0;
 }

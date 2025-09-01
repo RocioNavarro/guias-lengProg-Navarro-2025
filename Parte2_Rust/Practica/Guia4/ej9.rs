@@ -8,7 +8,7 @@ Recuerde que este algoritmo funciona como sigue:
 
 use std::io;
 
-fn mcd(a: i32, b: i32) -> i32 {
+pub fn mcd(a: i32, b: i32) -> i32 {
     if a == b {
         a
     } else if a > b {

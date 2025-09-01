@@ -20,4 +20,5 @@ fn main () {
         None => {} // no hacer nada si es None
     }
 }*/
-// Para este caso no es necesario hacerlo asi completo porque en caso de None no se hace nada
+// Para este ejercicio no es necesario hacerlo asi completo porque en caso de None no se hace nada
+

@@ -30,5 +30,12 @@ fn give_ownership() -> String {
     s.clone() // Devolvemos una copia/clon del String, s sigue siendo válido en main
 }
 
-// todo arreglar --> sigue sin funcionar
+/* 
+No se puede solucionar sin tocar el main 
+No hay forma de resolver este problema solo cambiando give_ownership(), porque:
 
+main consume el String con into_bytes().
+
+Luego intenta usarlo de nuevo.
+give_ownership() solo puede devolver un único String, y ese será movido por into_bytes().
+*/

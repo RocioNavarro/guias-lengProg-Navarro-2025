@@ -1,7 +1,6 @@
 // El siguiente programa no compila. Explique el error y resuélvalo. ¿Qué conclusión puede sacar?
-// Programa 9
 
-/*
+/* 
 fn main() {
     let s = String::from("Hello ");   
     let s1 = s;

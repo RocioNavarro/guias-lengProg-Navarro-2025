@@ -135,3 +135,9 @@ main = do
   print numeroBaseDescendente
   putStrLn "Número decimal equivalente:"
   print (convertToDecimalDescendente numeroBaseDescendente base)
+  -- Ej 7:
+  let numeroHexAscendente = ['F','A','3']  -- representa el número 3AF en hexadecimal ascendente (943 en decimal)
+  putStrLn "Número hexadecimal ascendente:"
+  print numeroHexAscendente
+  putStrLn "Número decimal equivalente:"
+  print (hexadecimalToDecimalAscendente numeroHexAscendente)

@@ -1,6 +1,7 @@
 
 module Main where
 import Data.Char (toUpper)
+import Distribution.Simple.Utils (xargs)
 
 
 member :: Eq a => a -> [a] -> Bool
@@ -84,8 +85,8 @@ convertToDecimalDescendente (x:xs) base
 -- 7) Escriba un programa que encuentre el valor decimal de un número hexadecimal. El número se expresa en una lista como en el ejercicio 5.
 hexDigitToInt :: Char -> Int
 hexDigitToInt c
-    | c >= '0' && c <= '9' = fromEnum c - fromEnum '0'
-    | c >= 'A' && c <= 'F' = fromEnum c - fromEnum 'A' + 10
+    | c >= '0' && c <= '9' = fromEnum c - fromEnum '0' -- fromEnum convierte a ascii, resto fromEnum '0' porque en ascii antes del 0 hay símbolos entonces '0'=48, '1'=49, etc.
+    | c >= 'A' && c <= 'F' = fromEnum c - fromEnum 'A' + 10 -- fromEnum 'A' = 65, entonces 'A' - 'A' + 10 = 10, 'B' - 'A' + 10 = 11, etc.
     | otherwise            = error "Carácter no válido para un dígito hexadecimal"
 
 hexadecimalToDecimalAscendente :: [Char] -> Int
@@ -96,10 +97,56 @@ hexadecimalToDecimalAscendente xs = convertirHex xs 0
     convertirHex (y:ys) pos = hexDigitToInt (toUpper y) * 16^pos + convertirHex ys (pos + 1)
     
 
+-- 8) Escriba un programa Haskell para calcular el máximo común divisor de dos números positivos usando el algoritmo de Euclides.
+--    Euclides plantea que dcm(a,b) = a si b=0, y mcd(a,b) = dcm(b, a mod b) si b ≠ 0
+
+dcmEuclides :: Int -> Int -> Int
+dcmEuclides a 0 = a
+dcmEuclides a b = dcmEuclides b (a `mod` b)
+
+
+-- 9) Escriba un programa Haskell que inserte un número en una lista ordenada, de manera que la lista continúe ordenada. 
+--    Por ejemplo, si se inserta 3 en la lista [1,2,5,7], debe resultar la lista [1,2,3,5,7].
+insertSortedList :: Ord a => a -> [a] -> [a]
+insertSortedList x [] = [x]
+insertSortedList x (y:ys)
+    | x <= y    = x : y : ys
+    | otherwise = y : insertSortedList x ys
+
+
+-- 10) Escriba un programa Haskell que ordene una lista con el algoritmo de ordenamiento por inserción. 
+--     Puede usar la función del ejercicio anterior.
+insertionSort :: Ord a => [a] -> [a]
+insertionSort [] = []
+insertionSort (x:xs) = insertSortedList x (insertionSort xs)
+
+
+-- 11) Escriba un programa Haskell que combine dos listas ordenadas en una única lista ordenada. (merge)
+mergeSortedLists :: Ord a => [a] -> [a] -> [a]
+mergeSortedLists [] ys = ys
+mergeSortedLists xs [] = xs
+mergeSortedLists (x:xs) (y:ys)
+    | x <= y    = x : mergeSortedLists xs (y:ys)
+    | otherwise = y : mergeSortedLists (x:xs) ys
+
+
+-- 12) Calcule el valor de la función de Fibonacci de un número n como una lista [1,2,..,f(n)] donde f(n) es el numero buscado
+fibonacci :: Int -> Int
+fibonacci 0 = 0
+fibonacci 1 = 1
+fibonacci n = fibonacci (n - 1) + fibonacci (n - 2)
+
+fibonacciList :: Int -> [Int]
+fibonacciList n = [fibonacci x | x <- [1..n]]
 
 
 
--- Pruebas de ejs
+
+
+
+
+
+-- PRUEBAS DE EJERCICIOS -- 
 main :: IO ()
 main = do
   let list1 = [1,2,3,4]
@@ -141,3 +188,19 @@ main = do
   print numeroHexAscendente
   putStrLn "Número decimal equivalente:"
   print (hexadecimalToDecimalAscendente numeroHexAscendente)
+  -- Ej 8:
+  let a = 48
+  let b = 18
+  putStrLn $ "El máximo común divisor de " ++ show a ++ " y " ++ show b ++ " es: " ++ show (dcmEuclides a b)
+  -- Ej 9:
+  putStrLn $ "Insertar 3 en la lista ordenada [1,2,5,7] resulta en: " ++ show (insertSortedList 3 [1,2,5,7])
+  -- Ej 10:
+  let listaDesordenada = [5,2,9,1,5,6]
+  putStrLn $ "Ordenar la lista " ++ show listaDesordenada ++ " resulta en: " ++ show (insertionSort listaDesordenada)
+  -- Ej 11:
+  let lista1 = [1,3,5,9]
+  let lista2 = [2,4,6,8]
+  putStrLn $ "Merge de lista1: " ++ show lista1 ++ " con lista2: " ++ show lista2 ++ " resulta en: " ++ show (mergeSortedLists lista1 lista2)
+  -- Ej 12:
+  let n = 7
+  putStrLn $ "Los primeros " ++ show n ++ " números de Fibonacci son: " ++ show (fibonacciList n) 

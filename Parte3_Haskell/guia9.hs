@@ -109,6 +109,22 @@ myCollatzLongerThan10 = [n | n <- [1..100], length (collatz n) > 10]
 -}
 
 
+-- 11) ¿Es posible definir la función elem utilizando fold?
+elem'' :: Eq a => a -> [a] -> Bool
+elem'' x = foldl (\acc y -> acc || (x == y)) False
+
+
+-- 12) Tenemos la siguiente funcion, es posible redefinirla usando foldl1 ?
+suma :: (Num a) => [a] -> a
+suma = foldl (+) 0
+
+suma2 :: (Num a) => [a] -> a
+suma2 = foldl1 (+)  -- foldl1 no necesita un valor inicial
+
+
+
+
+
 
 -- PRUEBAS EJS --
 
@@ -139,3 +155,14 @@ main = do
     putStrLn $ "myMap (*2) [1,2,3,4,5]: " ++ show (myMap funcion lista)  
     -- Ej 9
     putStrLn $ "Números del 1 al 100 con secuencia de Collatz más larga que 10: " ++ show myCollatzLongerThan10
+    -- Ej 11
+    putStrLn $ "elem'' 3 [1,2,3,4,5] : " ++ show (elem'' 3 [1,2,3,4,5])  -- True
+    putStrLn $ "elem'' 6 [1,2,3,4,5] : " ++ show (elem'' 6 [1,2,3,4,5])  -- False
+    -- Ej 12
+    putStrLn $ "suma [1,2,3,4,5] : " ++ show (suma [1,2,3,4,5])  -- 15
+    putStrLn $ "suma2 [1,2,3,4,5] : " ++ show (suma2 [1,2,3,4,5])  -- 15
+    
+    
+    -- Ejemplos foldl y foldr
+    putStrLn $ "foldr (:) [] [1,2,3] : " ++ show (foldr (:) [] [1,2,3]) -- foldr es ideal para construir listas (y trabajar con listas infinitas)
+    putStrLn $ "foldl (+) 0 [1,2,3] : " ++ show (foldl (+) 0 [1,2,3]) -- foldl es ideal para acumular resultados simples como sumas o productos

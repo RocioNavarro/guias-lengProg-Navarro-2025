@@ -40,30 +40,3 @@ ghc -o hello Hello.hs
 # rm hello Hello.hi Hello.o
 ```
 
-## Usando Cabal (proyecto)
-```bash
-cabal init --non-interactive --minimal
-cabal build
-cabal run
-```
-
-## Usando Stack (proyecto)
-```bash
-stack new mi-proyecto simple
-cd mi-proyecto
-stack setup
-stack build
-stack run
-stack ghci
-```
-
-## Nota sobre el editor (VS Code)
-- No necesitas haskell-language-server (HLS) para ejecutar archivos, pero HLS mejora autocompletado y diagnóstico.
-- Para instalar HLS con ghcup:
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-source "$HOME/.ghcup/env"
-ghcup install hls
-haskell-language-server --version
-```
-Reiniciar VS Code después de instalar HLS para que la extensión lo detecte.

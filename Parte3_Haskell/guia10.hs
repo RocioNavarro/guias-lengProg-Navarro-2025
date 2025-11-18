@@ -1,6 +1,7 @@
 
 import Data.List (words, sort, group, tails, isPrefixOf)
 import CodigoCesar (cifrar, descifrar)
+import Data.Text.Internal.Fusion.Size (larger)
 
 
 {-
@@ -93,8 +94,12 @@ contenida xs ys =
 -}
 
 
-
-
+quickSort :: Ord a => [a] -> [a]
+quickSort [] = []
+quickSort (x:xs) = 
+    let smallerOrEquals = [ a | a <- xs, a <= x ]
+        larger = [ a | a <- xs, a<x ]
+    in quickSort(smallerOrEquals) ++ [x] ++ larger
 
 
 

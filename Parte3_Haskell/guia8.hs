@@ -28,7 +28,7 @@ intersection (x:xs) ys
 
 
 -- 3) Escriba un programa Haskell que, dados dos conjuntos, nos devuelva su diferencia. 
---    Recuerde que A - B = {x | x ∈ A y x ∉ B}.
+--    Recuerde que A - B = {x | x ∈ A y x ∉ B}. Retorna los elementos de A que no estan en B.
 difference :: Eq a => [a] -> [a] -> [a]
 difference [] _ = []
 difference (x:xs) ys
@@ -138,7 +138,15 @@ fibonacci n = fibonacci (n - 1) + fibonacci (n - 2)
 
 fibonacciList :: Int -> [Int]
 fibonacciList n = [fibonacci x | x <- [1..n]]
+    
 
+-- Otra manera de implementar haciendo todo junto
+fiboList :: Int -> [Int]
+fiboList n = [fibo x | x <- [1..n]]
+  where
+    fibo 0 = 0
+    fibo 1 = 1
+    fibo m = fibo (m - 1) + fibo (m - 2)
 
 
 
@@ -152,7 +160,7 @@ main = do
   let list1 = [1,2,3,4]
   let list2 = [3,4,5,6]
   putStrLn $ "List1: " ++ show list1
-  putStrLn $ "List2: " ++ show list2
+  putStrLn $ "List2: " ++ show list2  
   putStrLn $ "Union: " ++ show (union list1 list2) -- Ej 1
   putStrLn $ "Intersection: " ++ show (intersection list1 list2) -- Ej 2
   putStrLn $ "Difference (list1 - list2): " ++ show (difference list1 list2) -- Ej 3

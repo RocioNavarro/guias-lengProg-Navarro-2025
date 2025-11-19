@@ -1,8 +1,11 @@
 
+module Main where 
+
 import Data.List (words, sort, group, tails, isPrefixOf)
 import CodigoCesar (cifrar, descifrar)
 import Data.Text.Internal.Fusion.Size (larger)
-
+import Data.Bool (Bool(True))
+import Data.Binary.Get (isEmpty)
 
 {-
     EJERCICIO 1
@@ -117,10 +120,73 @@ quickSort (x:xs) =
     in quickSort(smallerOrEquals) ++ [x] ++ quickSort(larger)
 
 
+{-
+Defina un tipo de datos Stack que representa una pila. Este tipo de datos permite las siguientes operaciones: 
+    - top, que devuelve el primer elemento de la pila o Nothing si la pila está vacía; 
+    - emptyStack que devuelve true o false dependiendo de que la pila esté o no vacía; 
+    - pop que elimina y devuelve el tope de la pila (si la pila está vacía, devuelve Nothing); 
+    - y push, que agrega un elemento a la pila (es innecesario decir que lo coloca en el tope. Es una pila, ¿no?)
+-}
+
+-- Definimos el tipo de datos Stack
+data Stack a = Stack [a]  deriving (Show)
+
+top :: Stack a -> Maybe a   
+top (Stack [])    = Nothing
+top (Stack (x:_)) = Just x
+
+emptyStack :: Stack a -> Bool
+emptyStack (Stack [])    = True
+emptyStack (Stack xs) = False
+
+pop :: Stack a -> Maybe (a, Stack a)
+pop (Stack []) = Nothing
+pop (Stack (x:xs)) = Just (x, Stack xs) -- Por ser una pila, sacamos elementos de adelante que es lo ultimo que entro
+
+push :: a -> Stack a -> Stack a
+push a (Stack []) = Stack [a]
+push a (Stack xs) = Stack(a:xs)  -- Por ser una pila, agregamos elementos adelante
+-- IDEM: push a (Stack(x:xs)) = Stack(a:x:xs)
+
+
+
+{-
+Vamos a implementar una cola (queue) en Haskell, con las operaciones básicas:
+    emptyQueue → crear cola vacía
+    isEmpty → saber si está vacía
+    enqueue → agregar al final
+    dequeue → sacar el primero
+    first → ver el primero sin sacarlo
+-}
+
+data Queue a = Queue [a] deriving (Show)
+
+emptyQueue :: Queue a
+emptyQueue = Queue []
+
+myIsEmpty :: Queue a -> Bool
+myIsEmpty (Queue []) = True
+myIsEmpty (Queue xs) = False
+
+enqueue :: a -> Queue a -> Queue a
+enqueue e (Queue []) = Queue [e]
+enqueue e (Queue xs) = Queue (xs ++ [e]) -- Por ser una cola, agregamos elementos atras
+
+dequeue :: Queue a -> Maybe (a, Queue a)
+dequeue (Queue []) = Nothing
+dequeue (Queue (x:xs)) = Just (x, Queue xs) -- Por ser una cola, saco de adelante que es lo primero que entro
+
+first :: Queue a -> Maybe a
+first (Queue [])     = Nothing
+first (Queue (x:_)) = Just x
+
+
+
 
 main :: IO ()
 main = do
-    -- Ej 1
+
+-- Ej 1
     let texto = "ab aa bb aa cc ab aa"
     print (frecuencias texto)
     -- Ej 2
@@ -140,3 +206,37 @@ main = do
     putStrLn $ "Lista desordenada: " ++ show listaDesordenada
     let listaOrdenada = quickSort listaDesordenada
     putStrLn $ "Lista ordenada: " ++ show listaOrdenada 
+
+    putStrLn "=== Probando STACK ==="
+
+    let s0 :: Stack Int
+        s0 = Stack []                 -- pila vacía
+    print s0
+    print (emptyStack s0)
+
+    let s1 = push 10 s0
+    let s2 = push 20 s1
+    let s3 = push 30 s2
+    print s3                          -- Stack [30,20,10]
+
+    print (top s3)                    -- Just 30
+
+    print (pop s3)                    -- Just (30, Stack [20,10])
+
+    putStrLn "\n=== Probando QUEUE ==="
+
+    let q0 :: Queue Int
+        q0 = emptyQueue
+    print q0
+    print (myIsEmpty q0)
+
+    let q1 = enqueue 1 q0
+    let q2 = enqueue 2 q1
+    let q3 = enqueue 3 q2
+    print q3                          -- Queue [1,2,3]
+
+    print (first q3)                  -- Just 1
+    
+    print (dequeue q3)                -- Just (1, Queue [2,3])
+
+    putStrLn "\nFin de pruebas."

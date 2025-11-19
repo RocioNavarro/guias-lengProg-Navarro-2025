@@ -44,5 +44,5 @@ main =  do
   print (price oranges)
   print (quadratic 1 (-3) 2)
   print (union [1,2,3] [3,4,5])
-  print (myFilter myEven [1,2,3,4,5])
+  print (myFilter myEven [1,2,3,4,5]) -- [2,4]
 

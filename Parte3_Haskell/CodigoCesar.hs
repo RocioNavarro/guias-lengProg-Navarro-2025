@@ -22,7 +22,6 @@ desplazar n c =
         nuevaPos = (pos + n) `mod` 26 -- Como hay 26 letras en el abecedario, aplicamos mod para obtener el resto de dividir por 26 y saber en que posicion caemos
     in toEnum (base + nuevaPos) -- Convierte a char la posicion nueva   
 
-
 cifrar :: Int -> String -> String
 cifrar n s = [desplazar n c | c <- s]
 

@@ -27,6 +27,7 @@ rotarIzquierda xs n = funcAux [] xs n
         funcAux ys xs 0 = xs ++ ys
         funcAux ys (x:xs) n = funcAux  (ys++[x]) xs (n-1)
 
+
 -- Ejemplo de uso:        
 -- [] abcdefghijklmnop 3
 -- a bcdefghijklmnop 2

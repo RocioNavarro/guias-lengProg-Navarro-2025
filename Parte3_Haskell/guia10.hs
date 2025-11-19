@@ -49,10 +49,10 @@ import Data.Text.Internal.Fusion.Size (larger)
 -}
 
 frecuencias :: String -> [(String, Int)]
-frecuencias xs =
-    let ws = words xs              -- separa en palabras
-        st = sort ws                -- ordena las palabras
-        grupos = group st           -- agrupa iguales
+frecuencias xs =  -- "ab aa bb aa cc ab aa"
+    let ws = words xs              -- separa en palabras ["ab", "aa", "bb", "aa", "cc", "ab", "aa"]
+        st = sort ws                -- ordena las palabras ["aa", "aa", "aa", "ab", "ab", "bb", "cc"]
+        grupos = group st           -- agrupa iguales [["aa","aa","aa"],["ab","ab"],["bb"],["cc"]]
     in [ (head ys, length ys) | ys <- grupos ] -- List comprehension: produce una nueva lista aplicando la expresión (head ys, length ys) a cada elemento ys tomado de la lista grupos.
     -- in map (\ys -> (head ys, length ys)) grupos  -- arma tuplas (palabra, repeticiones)
 
@@ -70,6 +70,10 @@ frecuencias xs =
 
     ghci> tails "party"
     ["party","arty","rty","ty","y",""]
+    tails [1,2,3,4,5]
+    [[1,2,3,4,5],[2,3,4,5],[3,4,5],[4,5],[5],[]]
+    tails "Beethoven"
+    ["Beethoven","eethoven","ethoven","thoven","hoven","oven","ven","en","n",""]
 
     ghci> "hawaii" `isPrefixOf` "hawaii joe"
     True
@@ -80,7 +84,18 @@ frecuencias xs =
 contenida :: Eq a => [a] -> [a] -> Bool
 contenida xs ys =
     let ts = tails ys  -- obtiene todas las colas de ys
-    in any (xs `isPrefixOf`) ts  -- verifica si xs es prefijo de alguna cola de ys  
+    in any (xs `isPrefixOf`) ts  -- verifica si xs es prefijo de alguna cola de ys
+
+contenida2 :: Eq a => [a] -> [a] -> Bool
+contenida2 xs ys  =
+    let ts = tails ys
+    in myAny (xs `isPrefixOf`) ts  
+        where
+            myAny :: (a -> Bool) -> [a] -> Bool
+            myAny _ [] = False
+            myAny f (z:zs)
+                | f z       = True
+                | otherwise = myAny f zs
 
 {-
     OBS:  any :: (a -> Bool) -> [a] -> Bool
@@ -97,9 +112,9 @@ contenida xs ys =
 quickSort :: Ord a => [a] -> [a]
 quickSort [] = []
 quickSort (x:xs) = 
-    let smallerOrEquals = [ a | a <- xs, a <= x ]
-        larger = [ a | a <- xs, a<x ]
-    in quickSort(smallerOrEquals) ++ [x] ++ larger
+    let smallerOrEquals = [ a | a <- xs, a <= x ] -- toma el primer elemento como pivote
+        larger = [ a | a <- xs, a > x ]
+    in quickSort(smallerOrEquals) ++ [x] ++ quickSort(larger)
 
 
 
@@ -120,3 +135,8 @@ main = do
     putStrLn $ "Palabra cifrada con desplazamiento " ++ show desplazamiento ++ ": " ++ cifrada
     let descifrada = descifrar desplazamiento cifrada
     putStrLn $ "Palabra descifrada: " ++ descifrada  
+    -- Ej 4
+    let listaDesordenada = [3,6,1,8,4,5,2,7]
+    putStrLn $ "Lista desordenada: " ++ show listaDesordenada
+    let listaOrdenada = quickSort listaDesordenada
+    putStrLn $ "Lista ordenada: " ++ show listaOrdenada 

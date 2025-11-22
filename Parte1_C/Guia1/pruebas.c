@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main(void) {
 	int a, b, *p, **q;
@@ -58,6 +59,6 @@ int main(void) {
     // Un array de nros con 5 lugares puede almacenar 5 nros
     int z[5] = {10, 20, 30, 40, 50};
     printf("z: %d %d %d %d %d\n", z[0], z[1], z[2], z[3], z[4]);
-    
+
     return 0;
 }

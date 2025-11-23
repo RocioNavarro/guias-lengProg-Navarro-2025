@@ -24,3 +24,4 @@ int main(){
     printf("El factorial de %d es %d \n", n, fac);
     return 0;
 }
+

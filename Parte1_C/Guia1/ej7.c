@@ -11,8 +11,8 @@ int main() {
     char filename[100];
 
     printf("Ingrese el nombre del archivo: ");
-    scanf("%s", filename);
-
+    scanf("%s", filename); // no tengo que ponerle &filename porque scanf recibe puntero y array ya lo es
+    
     // Intentar abrir el archivo en modo lectura
     FILE* file = fopen(filename, "r");
 
